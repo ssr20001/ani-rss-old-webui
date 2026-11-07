@@ -1,6 +1,7 @@
 import api from "@/js/api.js";
 import {md5} from "js-md5";
 import {base64Encode} from "./global.js";
+import {ElMessageBox} from "element-plus";
 
 /**
  * 获取设置
@@ -26,7 +27,25 @@ export let listAni = () => api.post('api/listAni')
  * @param ani 订阅
  * @returns {Promise<unknown>}
  */
-export let addAni = (ani) => api.post('api/addAni', ani)
+export let addAni = async (ani) => {
+    try {
+        return await api.post('api/addAni?override=false', ani, {silent: true})
+    } catch (error) {
+        if (!['此订阅已存在', '订阅标题重复'].includes(error?.message)) {
+            throw error
+        }
+        try {
+            await ElMessageBox.confirm(
+                `订阅“${ani.title}”已存在，是否覆盖原订阅？`,
+                '订阅重复',
+                {confirmButtonText: '覆盖', cancelButtonText: '取消', type: 'warning'}
+            )
+        } catch {
+            return null
+        }
+        return api.post('api/addAni?override=true', ani, {silent: true})
+    }
+}
 
 /**
  * 修改订阅

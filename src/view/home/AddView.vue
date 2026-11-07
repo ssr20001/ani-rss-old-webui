@@ -205,10 +205,17 @@ const getRss = () => {
 const addAni = (fun) => {
   http.addAni(ani.value)
       .then(res => {
+        if (!res) {
+          return
+        }
         ElMessage.success(res.message)
         window.$reLoadList()
         dialogVisible.value = false
-      }).finally(fun)
+      })
+      .catch(error => {
+        ElMessage.error(error?.message || '添加订阅失败')
+      })
+      .finally(fun)
 }
 
 const activeName = useLocalStorage('add-active-name', 'mikan')

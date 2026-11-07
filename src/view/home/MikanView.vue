@@ -352,7 +352,6 @@ let batchAddition = async () => {
         "type": "mikan"
       }
 
-      ani = (await http.rssToAni(ani)).data
       if (item.length > 1) {
         ani.standbyRssList = item.slice(1)
             .map(o => {
@@ -363,8 +362,11 @@ let batchAddition = async () => {
               }
             })
       }
+      ani = (await http.rssToAni(ani)).data
+      if (!await http.addAni(ani)) {
+        return
+      }
       batchAdditionNum.value += item.length
-      await http.addAni(ani)
     }
     ElMessage.success("添加成功")
 
@@ -372,9 +374,12 @@ let batchAddition = async () => {
       location.reload()
     }, 1000)
   } catch (e) {
-    ElMessage.error(e)
+    ElMessage.error(e?.message || '添加订阅失败')
   } finally {
     batchAdditionDialogVisible.value = false
+    if (batchAdditionNum.value) {
+      window.$reLoadList?.()
+    }
   }
 }
 

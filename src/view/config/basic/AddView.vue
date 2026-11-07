@@ -10,6 +10,12 @@
     <el-form-item label="自动剧集偏移">
       <el-switch v-model:model-value="props.config.offset"/>
     </el-form-item>
+    <el-form-item label="自动偏移类型">
+      <el-select v-model="props.config['offsetType']" class="width-150">
+        <el-option value="AUTO_OFFSET" label="AutoOffset"/>
+        <el-option value="BGM_OFFSET" label="BgmOffset"/>
+      </el-select>
+    </el-form-item>
     <el-form-item label="BGM日语标题">
       <el-switch v-model:model-value="props.config['bgmJpName']"/>
     </el-form-item>

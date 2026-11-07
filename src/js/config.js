@@ -29,6 +29,7 @@ export let configData = {
     "delete": false,
     "deleteStandbyRSSOnly": false,
     "offset": false,
+    "offsetType": "AUTO_OFFSET",
     "titleYear": false,
     "autoDisabled": false,
     "skip5": true,
@@ -75,6 +76,7 @@ export let configData = {
     "apiKey": "",
     "downloadNew": false,
     "innerIP": false,
+    "verifyLoginIp": false,
     "renameTemplate": "[${subgroup}] ${title} S${seasonFormat}E${episodeFormat}",
     "renameDelYear": false,
     "renameDelTmdbId": false,
@@ -134,3 +136,9 @@ export let configData = {
     "allowCors": false,
     "uuid": ""
 }
+
+export const normalizeConfig = (config) => ({
+    ...config,
+    offsetType: config.offsetType ?? configData.offsetType,
+    verifyLoginIp: config.verifyLoginIp ?? configData.verifyLoginIp
+})

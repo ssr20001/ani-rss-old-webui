@@ -60,7 +60,7 @@ import BasicView from "@/view/config/BasicView.vue";
 import AboutView from "@/view/config/AboutView.vue";
 import LoginConfigView from "@/view/config/LoginConfigView.vue";
 import AfdianView from "@/view/config/AfdianView.vue";
-import {configData} from "@/js/config.js";
+import {configData, normalizeConfig} from "@/js/config.js";
 import * as http from "@/js/http.js";
 
 const dialogVisible = ref(false)
@@ -77,7 +77,7 @@ const show = (update) => {
   loading.value = true
   http.config()
       .then(res => {
-        config.value = res.data
+        config.value = normalizeConfig(res.data)
       })
       .finally(() => {
         loading.value = false
